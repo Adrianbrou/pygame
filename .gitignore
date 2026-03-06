@@ -3,3 +3,4 @@
 .python-version
 *.toml
 uv.lock
+game_state.jsonl
