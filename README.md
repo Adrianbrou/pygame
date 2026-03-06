@@ -1,0 +1,1 @@
+Create our first game using pygame, but the goal is python file structure for project 
