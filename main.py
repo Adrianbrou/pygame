@@ -4,6 +4,7 @@ from logger import log_state,log_event
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+from shot import Shot
 
 
 #this initialize the pygame
@@ -25,7 +26,8 @@ def main():
     drawable = pygame.sprite.Group() #object that can be represent on the game like, triangle, circle..
 
     #creation of group of asteroids
-    asteroids = pygame.sprite.Group() 
+    asteroids = pygame.sprite.Group()
+    shots =  pygame.sprite.Group()
 
     """"
     ############################ STATIC CONTAINERS FIELDS ###########################################################################
@@ -35,6 +37,8 @@ def main():
     Player.containers = (updatable, drawable)
     Asteroid.containers = (asteroids,updatable, drawable)
     AsteroidField.containers = (updatable)
+    Shot.containers = (updatable, drawable,shots)
+
 
     """"
     #######################################################################################################
@@ -62,11 +66,23 @@ def main():
             if event.type == pygame.QUIT:
                 return
         screen.fill("black")
+
+
+        #collision check to kill asteroid
+        for asteroid in asteroids:
+            for shot in shots:
+                if asteroid.collides_with(shot):
+                    log_event("asteroid_shot")
+                    asteroid.kill()
+                    shot.kill()
+        #collision check to die
         for asteroid in asteroids:
             if asteroid.collides_with(player):
                 log_event("player_hit")
                 print("Game Over!")
                 sys.exit()
+        
+
 
         #here we draw the player after filling the screen with black
         
